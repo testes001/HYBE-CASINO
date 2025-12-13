@@ -1,0 +1,283 @@
+{
+  "id": "102019aae7a02617590a9bf7c9602ff3001",
+  "version": "102019ab02df9d7704fa02e2c2a4eddc961",
+  "schema": {
+    "name": "transaction",
+    "description": "Represents a double-entry ledger transaction for user actions.",
+    "fields": [
+      {
+        "name": "id",
+        "description": "Unique identifier for each data of this entity.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal system identifier."
+        }
+      },
+      {
+        "name": "data_creator",
+        "description": "id of the user who creates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "data_updater",
+        "description": "id of the user who updates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "create_time",
+        "description": "create time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "update_time",
+        "description": "update time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "user_id",
+        "description": "Reference to the user associated with this transaction.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "Links to user's sensitive data."
+        }
+      },
+      {
+        "name": "type",
+        "description": "The type of financial transaction.",
+        "type": 100,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "enumeration": [
+          {
+            "value": "Unspecified"
+          },
+          {
+            "number": 1,
+            "value": "DEPOSIT"
+          },
+          {
+            "number": 2,
+            "value": "WAGER"
+          },
+          {
+            "number": 3,
+            "value": "WIN"
+          },
+          {
+            "number": 4,
+            "value": "LOSS"
+          },
+          {
+            "number": 5,
+            "value": "WITHDRAWAL"
+          }
+        ]
+      },
+      {
+        "name": "currency",
+        "description": "The currency symbol for the transaction.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        }
+      },
+      {
+        "name": "amount",
+        "description": "Decimal string for the transaction amount. Positive for credit, negative for debit.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "User's financial information."
+        }
+      },
+      {
+        "name": "balance_before",
+        "description": "Decimal string for the user's balance before the transaction.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "User's financial information."
+        }
+      },
+      {
+        "name": "balance_after",
+        "description": "Decimal string for the user's balance after the transaction.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "User's financial information."
+        }
+      },
+      {
+        "name": "status",
+        "description": "The current status of the transaction.",
+        "type": 100,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "enumeration": [
+          {
+            "value": "Unspecified"
+          },
+          {
+            "number": 1,
+            "value": "PENDING"
+          },
+          {
+            "number": 2,
+            "value": "COMPLETED"
+          },
+          {
+            "number": 3,
+            "value": "FAILED"
+          }
+        ]
+      },
+      {
+        "name": "game_session_id",
+        "description": "Optional reference to the game session that triggered this transaction.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Links internal operational entities."
+        },
+        "nullable": true
+      },
+      {
+        "name": "metadata",
+        "description": "JSON string for additional transaction details, like blockchain transaction hash.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "nullable": true
+      },
+      {
+        "name": "completed_at",
+        "description": "Timestamp unix when the transaction was completed or failed in 10-digit string.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "nullable": true,
+        "format": "timestamp"
+      }
+    ],
+    "indexes": [
+      {
+        "fields": [
+          "id"
+        ],
+        "unique": true,
+        "primary": true,
+        "order": false
+      },
+      {
+        "fields": [
+          "user_id"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "game_session_id"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "status"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "type"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "currency",
+          "user_id"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_creator"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_updater"
+        ],
+        "order": false
+      }
+    ],
+    "relations": [
+      {
+        "referencing_fields": [
+          "user_id"
+        ],
+        "referenced_entity": {
+          "name": "user"
+        },
+        "referenced_fields": [
+          "id"
+        ]
+      },
+      {
+        "referencing_fields": [
+          "game_session_id"
+        ],
+        "referenced_entity": {
+          "name": "game_session"
+        },
+        "referenced_fields": [
+          "id"
+        ]
+      }
+    ]
+  },
+  "task": {
+    "id": "6922dc78947327e7a027e741",
+    "root": "69226b8241e3ace1254f4ffd",
+    "project": "69226b8241e3ace1254f4ffc",
+    "user": "88e1e320-f0c1-7017-5338-314d797229dc"
+  },
+  "namespace": {
+    "id": "01987547fc6c72ecb453bd2736bd4ea0",
+    "tenant": 2,
+    "name": "global-1",
+    "default": true
+  },
+  "revision": 1
+}

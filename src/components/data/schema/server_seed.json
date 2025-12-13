@@ -1,0 +1,154 @@
+{
+  "id": "102019aae79be177f228d6fc861939c8f20",
+  "version": "102019aae79be177da6905c025d0d0c9d31",
+  "schema": {
+    "name": "server_seed",
+    "description": "Stores server seeds for the provably fair betting system.",
+    "fields": [
+      {
+        "name": "id",
+        "description": "Unique identifier for each data of this entity.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal system identifier."
+        }
+      },
+      {
+        "name": "data_creator",
+        "description": "id of the user who creates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "data_updater",
+        "description": "id of the user who updates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "create_time",
+        "description": "create time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "update_time",
+        "description": "update time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "seed_value",
+        "description": "The secret server seed value, revealed after rotation.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 4,
+          "reason": "Highly sensitive data crucial for provably fair system integrity."
+        },
+        "encryption": true
+      },
+      {
+        "name": "seed_hash",
+        "description": "SHA256 hash of the seed value, publicly visible before rotation.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 1,
+          "reason": "Public information used for bet verification."
+        }
+      },
+      {
+        "name": "is_active",
+        "description": "Flag indicating if this seed is currently active for new game sessions.",
+        "type": 3,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        }
+      },
+      {
+        "name": "next_seed_hash",
+        "description": "SHA256 hash of the next seed in the chain, ensuring continuous integrity.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 1,
+          "reason": "Public information used for seed chain verification."
+        },
+        "nullable": true
+      },
+      {
+        "name": "rotated_at",
+        "description": "Timestamp unix when this seed was rotated out and the value revealed in 10-digit string.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "nullable": true,
+        "format": "timestamp"
+      }
+    ],
+    "indexes": [
+      {
+        "fields": [
+          "id"
+        ],
+        "unique": true,
+        "primary": true,
+        "order": false
+      },
+      {
+        "fields": [
+          "seed_hash"
+        ],
+        "unique": true,
+        "order": false
+      },
+      {
+        "fields": [
+          "is_active"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_creator"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_updater"
+        ],
+        "order": false
+      }
+    ]
+  },
+  "task": {
+    "id": "69226b8241e3ace1254f4ffd",
+    "root": "69226b8241e3ace1254f4ffd",
+    "project": "69226b8241e3ace1254f4ffc",
+    "user": "88e1e320-f0c1-7017-5338-314d797229dc"
+  },
+  "namespace": {
+    "id": "01987547fc6c72ecb453bd2736bd4ea0",
+    "tenant": 2,
+    "name": "global-1",
+    "default": true
+  },
+  "revision": 1
+}

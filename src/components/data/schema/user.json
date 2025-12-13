@@ -1,0 +1,143 @@
+{
+  "id": "102019aae79be177e43990ffaccd2d00530",
+  "version": "102019aae79be177da6905c025d0d0c9d31",
+  "schema": {
+    "name": "user",
+    "description": "Stores user account information for the iGaming platform.",
+    "fields": [
+      {
+        "name": "id",
+        "description": "Unique identifier for each data of this entity.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal system identifier."
+        }
+      },
+      {
+        "name": "data_creator",
+        "description": "id of the user who creates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "data_updater",
+        "description": "id of the user who updates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "create_time",
+        "description": "create time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "update_time",
+        "description": "update time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "wallet_address",
+        "description": "User's unique Ethereum wallet address.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "User's personal financial information."
+        },
+        "pattern": "^0x[a-fA-F0-9]{40}$"
+      },
+      {
+        "name": "kyc_level",
+        "description": "Know Your Customer verification level, from 0 (unverified) to 3 (fully verified).",
+        "type": 2,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "Contains sensitive user verification status."
+        },
+        "taxonomy": {
+          "category": "User Profile",
+          "subject": "KYC/AML"
+        },
+        "numeric": "uint"
+      },
+      {
+        "name": "is_banned",
+        "description": "Flag indicating if the user's account is banned.",
+        "type": 3,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        }
+      },
+      {
+        "name": "last_login_at",
+        "description": "Timestamp unix of the user's last login in 10-digit string.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "nullable": true,
+        "format": "timestamp"
+      }
+    ],
+    "indexes": [
+      {
+        "fields": [
+          "id"
+        ],
+        "unique": true,
+        "primary": true,
+        "order": false
+      },
+      {
+        "fields": [
+          "wallet_address"
+        ],
+        "unique": true,
+        "order": false
+      },
+      {
+        "fields": [
+          "data_creator"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_updater"
+        ],
+        "order": false
+      }
+    ]
+  },
+  "task": {
+    "id": "69226b8241e3ace1254f4ffd",
+    "root": "69226b8241e3ace1254f4ffd",
+    "project": "69226b8241e3ace1254f4ffc",
+    "user": "88e1e320-f0c1-7017-5338-314d797229dc"
+  },
+  "namespace": {
+    "id": "01987547fc6c72ecb453bd2736bd4ea0",
+    "tenant": 2,
+    "name": "global-1",
+    "default": true
+  },
+  "revision": 1
+}

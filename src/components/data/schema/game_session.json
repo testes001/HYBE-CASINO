@@ -1,0 +1,280 @@
+{
+  "id": "102019aae79be18706ba94ab2e6f4706903",
+  "version": "102019aae79be177da6905c025d0d0c9d31",
+  "schema": {
+    "name": "game_session",
+    "description": "Records a single game or bet instance, including inputs and outcomes.",
+    "fields": [
+      {
+        "name": "id",
+        "description": "Unique identifier for each data of this entity.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal system identifier."
+        }
+      },
+      {
+        "name": "data_creator",
+        "description": "id of the user who creates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "data_updater",
+        "description": "id of the user who updates the record",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        }
+      },
+      {
+        "name": "create_time",
+        "description": "create time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "update_time",
+        "description": "update time in timestamp unix",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal audit trail."
+        },
+        "format": "timestamp"
+      },
+      {
+        "name": "user_id",
+        "description": "Reference to the user who initiated the game.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "Links to user's sensitive data."
+        }
+      },
+      {
+        "name": "server_seed_id",
+        "description": "Reference to the server seed used for this game.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data for provably fair system."
+        }
+      },
+      {
+        "name": "client_seed",
+        "description": "The seed provided by the user for this game.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "User-provided data for provably fair system."
+        }
+      },
+      {
+        "name": "nonce",
+        "description": "An incrementing number for each bet with a given seed pair.",
+        "type": 2,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data for provably fair system."
+        },
+        "numeric": "uint"
+      },
+      {
+        "name": "bet_amount",
+        "description": "Decimal string for the amount wagered. Uses string for precision.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "User's financial information."
+        }
+      },
+      {
+        "name": "currency",
+        "description": "The currency symbol of the wager.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        }
+      },
+      {
+        "name": "outcome",
+        "description": "The resulting game outcome, typically a number between 0 and 99.99.",
+        "type": 2,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Game result data."
+        },
+        "taxonomy": {
+          "category": "Game Data",
+          "subject": "Result"
+        },
+        "nullable": true,
+        "numeric": "float"
+      },
+      {
+        "name": "multiplier",
+        "description": "The payout multiplier determined by the game outcome.",
+        "type": 2,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Game result data."
+        },
+        "taxonomy": {
+          "category": "Game Data",
+          "subject": "Payout"
+        },
+        "nullable": true,
+        "numeric": "float"
+      },
+      {
+        "name": "win_amount",
+        "description": "Decimal string for the amount won. Uses string for precision.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 3,
+          "reason": "User's financial information."
+        }
+      },
+      {
+        "name": "status",
+        "description": "The current status of the game session.",
+        "type": 100,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "enumeration": [
+          {
+            "value": "Unspecified"
+          },
+          {
+            "number": 1,
+            "value": "PENDING"
+          },
+          {
+            "number": 2,
+            "value": "WON"
+          },
+          {
+            "number": 3,
+            "value": "LOST"
+          },
+          {
+            "number": 4,
+            "value": "CANCELLED"
+          }
+        ]
+      },
+      {
+        "name": "game_data",
+        "description": "JSON string for game-specific data, such as cards dealt or slot symbols.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "nullable": true
+      },
+      {
+        "name": "completed_at",
+        "description": "Timestamp unix when the game session concluded in 10-digit string.",
+        "type": 1,
+        "compliance": {
+          "confidentiality": 2,
+          "reason": "Internal operational data."
+        },
+        "nullable": true,
+        "format": "timestamp"
+      }
+    ],
+    "indexes": [
+      {
+        "fields": [
+          "id"
+        ],
+        "unique": true,
+        "primary": true,
+        "order": false
+      },
+      {
+        "fields": [
+          "user_id"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "status",
+          "user_id"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "server_seed_id"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_creator"
+        ],
+        "order": false
+      },
+      {
+        "fields": [
+          "data_updater"
+        ],
+        "order": false
+      }
+    ],
+    "relations": [
+      {
+        "referencing_fields": [
+          "user_id"
+        ],
+        "referenced_entity": {
+          "name": "user"
+        },
+        "referenced_fields": [
+          "id"
+        ]
+      },
+      {
+        "referencing_fields": [
+          "server_seed_id"
+        ],
+        "referenced_entity": {
+          "name": "server_seed"
+        },
+        "referenced_fields": [
+          "id"
+        ]
+      }
+    ]
+  },
+  "task": {
+    "id": "69226b8241e3ace1254f4ffd",
+    "root": "69226b8241e3ace1254f4ffd",
+    "project": "69226b8241e3ace1254f4ffc",
+    "user": "88e1e320-f0c1-7017-5338-314d797229dc"
+  },
+  "namespace": {
+    "id": "01987547fc6c72ecb453bd2736bd4ea0",
+    "tenant": 2,
+    "name": "global-1",
+    "default": true
+  },
+  "revision": 1
+}
