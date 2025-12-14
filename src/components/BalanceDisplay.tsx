@@ -49,7 +49,7 @@ export function BalanceDisplay({
   }, [currentBalance, previousBalance]);
 
   return (
-    <Card className="relative p-6 overflow-hidden backdrop-blur-sm bg-card/95 border-2">
+    <Card variant="glass-glow" className="relative p-6 overflow-hidden border-2">
       {/* Glassmorphism overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
 

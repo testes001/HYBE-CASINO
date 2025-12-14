@@ -310,6 +310,189 @@ code {
 	border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Modern Premium Glassmorphism */
+.glass-premium {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+	backdrop-filter: blur(20px);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	box-shadow:
+		0 8px 32px rgba(0, 0, 0, 0.15),
+		inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass-premium {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow:
+		0 8px 32px rgba(0, 0, 0, 0.3),
+		inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Neon glow accent */
+.neon-glow {
+	box-shadow:
+		0 0 10px rgba(var(--primary-rgb, 59, 130, 246), 0.5),
+		0 0 20px rgba(var(--primary-rgb, 59, 130, 246), 0.3),
+		0 0 30px rgba(var(--primary-rgb, 59, 130, 246), 0.2);
+}
+
+.neon-glow-hover:hover {
+	box-shadow:
+		0 0 15px rgba(var(--primary-rgb, 59, 130, 246), 0.8),
+		0 0 30px rgba(var(--primary-rgb, 59, 130, 246), 0.5),
+		0 0 45px rgba(var(--primary-rgb, 59, 130, 246), 0.3);
+}
+
+.dark .neon-glow {
+	box-shadow:
+		0 0 15px rgba(147, 112, 219, 0.6),
+		0 0 30px rgba(147, 112, 219, 0.4),
+		0 0 45px rgba(147, 112, 219, 0.2);
+}
+
+.dark .neon-glow-hover:hover {
+	box-shadow:
+		0 0 20px rgba(147, 112, 219, 0.9),
+		0 0 40px rgba(147, 112, 219, 0.6),
+		0 0 60px rgba(147, 112, 219, 0.3);
+}
+
+/* Magnetic button effect keyframes */
+@keyframes magnetic-pull {
+	0%, 100% {
+		transform: translate(0, 0);
+	}
+	50% {
+		transform: translate(var(--tx, 0), var(--ty, 0));
+	}
+}
+
+.button-magnetic {
+	position: relative;
+	overflow: hidden;
+}
+
+.button-magnetic::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.1), transparent 60%);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.button-magnetic:hover::before {
+	opacity: 1;
+}
+
+/* Staggered fade-in animation */
+@keyframes stagger-fade-in {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.stagger-1 {
+	animation: stagger-fade-in 0.4s ease-out 0.1s both;
+}
+
+.stagger-2 {
+	animation: stagger-fade-in 0.4s ease-out 0.2s both;
+}
+
+.stagger-3 {
+	animation: stagger-fade-in 0.4s ease-out 0.3s both;
+}
+
+.stagger-4 {
+	animation: stagger-fade-in 0.4s ease-out 0.4s both;
+}
+
+.stagger-5 {
+	animation: stagger-fade-in 0.4s ease-out 0.5s both;
+}
+
+/* Premium gradient backgrounds */
+.gradient-dark-premium {
+	background: linear-gradient(135deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+.gradient-border {
+	background: linear-gradient(90deg, rgba(147, 112, 219, 0.4), rgba(59, 130, 246, 0.4), rgba(147, 112, 219, 0.4));
+	background-size: 200% 100%;
+	animation: gradient-shift 3s ease infinite;
+}
+
+/* Smooth scrolling */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Enhanced card transitions */
+[data-slot="card"] {
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-slot="card"]:hover {
+	transform: translateY(-2px);
+}
+
+/* Tab indicator animation */
+[role="tablist"] {
+	position: relative;
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton-loading {
+	0% {
+		background-position: -1000px 0;
+	}
+	100% {
+		background-position: 1000px 0;
+	}
+}
+
+.skeleton-loading {
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+	background-size: 1000px 100%;
+	animation: skeleton-loading 2s infinite;
+}
+
+/* Smooth transitions for theme */
+* {
+	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Disable transitions during animation */
+.animate-none {
+	animation: none !important;
+}
+
+/* Premium button hover state */
+button {
+	position: relative;
+	overflow: hidden;
+}
+
+button::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1), transparent 60%);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none;
+}
+
+button:hover::after {
+	opacity: 1;
+}
+
 /* Neon glow text */
 .neon-text {
 	text-shadow:

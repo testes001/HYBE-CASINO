@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WalletConnect } from '@/components/WalletConnect';
 import { BalanceDisplay } from '@/components/BalanceDisplay';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { DiceGame } from '@/components/DiceGame';
 import { SlotsGame } from '@/components/SlotsGame';
 import { BalloonGame } from '@/components/BalloonGame';
@@ -20,6 +21,7 @@ import { useWallet, useWalletBalances, useUserWallets, useDeposit } from '@/hook
 import { usePlaceBet, useGameSessions, useInitializeSeeds, useSessionForVerification } from '@/hooks/useGame';
 import { createConfetti } from '@/lib/confetti';
 import { Dice1, History, Shield, BarChart3, Zap, Cherry, Flame, Circle as CircleIcon, Target } from 'lucide-react';
+import { GradientDivider } from '@/components/GradientDivider';
 
 export const Route = createFileRoute("/")({
 	component: App,
@@ -232,8 +234,26 @@ function App() {
 	const lastSession = gameSessions[0];
 
 	return (
-		<div className="min-h-screen bg-background">
-			<div className="container mx-auto p-6 max-w-7xl">
+		<div className="min-h-screen bg-background relative">
+			{/* Animated background gradient */}
+			<div className="fixed inset-0 -z-10 overflow-hidden">
+				<motion.div
+					className="absolute inset-0 opacity-30"
+					animate={{
+						background: [
+							'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 112, 219, 0.1))',
+							'linear-gradient(135deg, rgba(147, 112, 219, 0.1), rgba(59, 130, 246, 0.1))',
+							'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 112, 219, 0.1))',
+						],
+					}}
+					transition={{
+						duration: 10,
+						repeat: Number.POSITIVE_INFINITY,
+						repeatType: 'reverse',
+					}}
+				/>
+			</div>
+			<div className="container mx-auto p-6 max-w-7xl relative z-10">
 				{/* Header */}
 				<motion.div
 					className="mb-8"
@@ -241,22 +261,25 @@ function App() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5 }}
 				>
-					<div className="flex items-center gap-3 mb-2">
-						<motion.div
-							animate={{
-								rotate: [0, 360],
-								scale: [1, 1.1, 1],
-							}}
-							transition={{
-								rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
-								scale: { duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: 'reverse' },
-							}}
-						>
-							<Dice1 className="w-8 h-8 text-primary" />
-						</motion.div>
-						<h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-							Provably Fair Casino
-						</h1>
+					<div className="flex items-center justify-between mb-2">
+						<div className="flex items-center gap-3">
+							<motion.div
+								animate={{
+									rotate: [0, 360],
+									scale: [1, 1.1, 1],
+								}}
+								transition={{
+									rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
+									scale: { duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: 'reverse' },
+								}}
+							>
+								<Dice1 className="w-8 h-8 text-primary" />
+							</motion.div>
+							<h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+								Provably Fair Casino
+							</h1>
+						</div>
+						<ThemeToggle />
 					</div>
 					<p className="text-muted-foreground">
 						Transparent, verifiable, blockchain-powered gaming with multiple games
@@ -277,6 +300,7 @@ function App() {
 						onDisconnect={disconnectWallet}
 					/>
 				</motion.div>
+				<GradientDivider className="mb-8" animated />
 
 				<AnimatePresence mode="wait">
 					{!isConnected ? (
