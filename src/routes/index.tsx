@@ -29,7 +29,7 @@ export const Route = createFileRoute("/")({
 
 function App() {
 	const { connectedAddress, currentUser, isConnected, connectWallet, disconnectWallet } = useWallet();
-	const [selectedCurrency, setSelectedCurrency] = useState('ETH');
+	const [selectedCurrency, setSelectedCurrency] = useState('BTC');
 	const [depositDialogOpen, setDepositDialogOpen] = useState(false);
 	const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useState('dice');
