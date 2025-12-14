@@ -1,22 +1,21 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { AdminDashboard } from "@/components/AdminDashboard";
-import { userSession } from "@/hooks/useWallet";
-import { authService } from "@/services/auth.service";
+import { useWallet } from "@/hooks/useWallet";
+
+function AdminGuard() {
+  const { currentUser, isConnected } = useWallet();
+
+  if (!isConnected) {
+    return <Navigate to="/" />;
+  }
+
+  if (currentUser?.role !== "admin") {
+    return <Navigate to="/" />;
+  }
+
+  return <AdminDashboard />;
+}
 
 export const Route = createFileRoute("/admin")({
-  beforeLoad: async () => {
-    if (!userSession.isUserSignedIn()) {
-      throw redirect({
-        to: "/",
-      });
-    }
-    const userData = userSession.loadUserData();
-    const user = await authService.getUserByWallet(userData.profile.btcAddress.p2wpkh.mainnet);
-    if (user?.role !== "admin") {
-      throw redirect({
-        to: "/",
-      });
-    }
-  },
-  component: AdminDashboard,
+  component: AdminGuard,
 });
