@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getAddress } from 'sats-connect';
 import { authService } from '@/services/auth.service';
 import { gameService } from '@/services/game.service';
 import type { UserModel } from '@/components/data/orm/orm_user';
@@ -13,24 +14,29 @@ export function useWallet() {
   const [currentUser, setCurrentUser] = useState<UserModel | null>(null);
   const queryClient = useQueryClient();
 
-  // Simulate wallet connection (in production, use Web3 library like ethers.js)
   const connectWallet = useCallback(async () => {
-    // Generate a demo wallet address
-    const demoAddress = `0x${Math.random().toString(16).substring(2, 42)}`;
-
-    try {
-      const result = await authService.connectWallet(demoAddress);
-      setConnectedAddress(demoAddress);
-      setCurrentUser(result.user);
-
-      // Invalidate queries to refetch data
-      queryClient.invalidateQueries({ queryKey: ['wallet'] });
-
-      return result;
-    } catch (error) {
-      console.error('Failed to connect wallet:', error);
-      throw error;
+    const getAddressOptions = {
+      payload: {
+        purposes: ['payment'],
+        message: 'Address for receiving payments',
+        network: {
+          type:'Mainnet'
+        },
+      },
+      onFinish: async (response: any) => {
+        const btcAddress = response.addresses[0].address;
+        setConnectedAddress(btcAddress);
+        try {
+          const result = await authService.connectWallet(btcAddress);
+          setCurrentUser(result.user);
+          queryClient.invalidateQueries({ queryKey: ['wallet'] });
+        } catch (error) {
+          console.error('Failed to connect wallet:', error);
+        }
+      },
+      onCancel: () => alert('Request canceled'),
     }
+    await getAddress(getAddressOptions);
   }, [queryClient]);
 
   const disconnectWallet = useCallback(async () => {
@@ -52,7 +58,7 @@ export function useWallet() {
 /**
  * Hook to get wallet balances
  */
-export function useWalletBalances(userId: string | null, currency: string = 'ETH') {
+export function useWalletBalances(userId: string | null, currency: string = 'BTC') {
   return useQuery({
     queryKey: ['wallet', 'balance', userId, currency],
     queryFn: async () => {
@@ -75,7 +81,7 @@ export function useUserWallets(userId: string | null) {
     queryFn: async () => {
       if (!userId) return [];
 
-      const currencies = ['ETH', 'BTC', 'USDT'];
+      const currencies = ['BTC', 'ETH', 'USDT'];
       const wallets = await Promise.all(
         currencies.map(currency => gameService.getWalletBalance(userId, currency))
       );

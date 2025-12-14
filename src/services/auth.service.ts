@@ -54,7 +54,7 @@ class AuthService {
     const newUser = newUsers[0];
 
     // Initialize wallets for supported currencies
-    const currencies = ['ETH', 'BTC', 'USDT'];
+    const currencies = ['BTC', 'ETH', 'USDT'];
     await this.walletOrm.insertWallet(
       currencies.map((currency) => ({
         user_id: newUser.id,
