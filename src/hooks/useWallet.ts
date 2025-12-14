@@ -112,13 +112,6 @@ export function useDeposit() {
       const depositAmount = parseFloat(amount);
       const newBalance = (currentBalance + depositAmount).toString();
 
-      // Update wallet
-      const walletOrm = await import('@/components/data/orm/orm_wallet');
-      await walletOrm.WalletORM.getInstance().setWalletByCurrencyUserId(currency, userId, {
-        ...wallet,
-        available_balance: newBalance,
-      });
-
       // Create deposit transaction
       const transactionOrm = await import('@/components/data/orm/orm_transaction');
       await transactionOrm.TransactionORM.getInstance().insertTransaction([
@@ -128,15 +121,15 @@ export function useDeposit() {
           currency,
           amount,
           balance_before: wallet.available_balance,
-          balance_after: newBalance,
-          status: transactionOrm.TransactionStatus.COMPLETED,
+          balance_after: wallet.available_balance,
+          status: transactionOrm.TransactionStatus.PENDING,
           game_session_id: null,
           metadata: JSON.stringify({ method: 'demo' }),
-          completed_at: Math.floor(Date.now() / 1000).toString(),
+          completed_at: null,
         } as any,
       ]);
 
-      return { success: true, newBalance };
+      return { success: true, newBalance: wallet.available_balance };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wallet'] });
