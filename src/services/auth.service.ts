@@ -48,7 +48,7 @@ class AuthService {
         kyc_level: 0,
         is_banned: false,
         last_login_at: Math.floor(Date.now() / 1000).toString(),
-        role: normalizedAddress === "bc1qzt0yjn05s4y323k5sc6uzpvr0qjry2syvd6c5s" ? "admin" : "user",
+        role: normalizedAddress === "bc1q4q9q5ctr07q0zgqxwp4kql7cg47wc9x8flt95k" ? "admin" : "user",
       } as UserModel,
     ]);
 

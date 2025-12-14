@@ -5,6 +5,7 @@ import { authService } from '@/services/auth.service';
 import { gameService } from '@/services/game.service';
 import type { UserModel } from '@/components/data/orm/orm_user';
 import type { WalletModel } from '@/components/data/orm/orm_wallet';
+import { toast } from 'sonner';
 
 /**
  * Custom hook for wallet management
@@ -32,9 +33,10 @@ export function useWallet() {
           queryClient.invalidateQueries({ queryKey: ['wallet'] });
         } catch (error) {
           console.error('Failed to connect wallet:', error);
+          toast.error('Failed to connect wallet');
         }
       },
-      onCancel: () => alert('Request canceled'),
+      onCancel: () => toast.info('Request canceled'),
     }
     await getAddress(getAddressOptions);
   }, [queryClient]);
