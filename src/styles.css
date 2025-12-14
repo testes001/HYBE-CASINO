@@ -428,6 +428,71 @@ code {
 	animation: gradient-shift 3s ease infinite;
 }
 
+/* Smooth scrolling */
+html {
+	scroll-behavior: smooth;
+}
+
+/* Enhanced card transitions */
+[data-slot="card"] {
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-slot="card"]:hover {
+	transform: translateY(-2px);
+}
+
+/* Tab indicator animation */
+[role="tablist"] {
+	position: relative;
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton-loading {
+	0% {
+		background-position: -1000px 0;
+	}
+	100% {
+		background-position: 1000px 0;
+	}
+}
+
+.skeleton-loading {
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+	background-size: 1000px 100%;
+	animation: skeleton-loading 2s infinite;
+}
+
+/* Smooth transitions for theme */
+* {
+	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Disable transitions during animation */
+.animate-none {
+	animation: none !important;
+}
+
+/* Premium button hover state */
+button {
+	position: relative;
+	overflow: hidden;
+}
+
+button::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.1), transparent 60%);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none;
+}
+
+button:hover::after {
+	opacity: 1;
+}
+
 /* Neon glow text */
 .neon-text {
 	text-shadow:
