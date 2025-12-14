@@ -8,10 +8,12 @@ function Card({
 	id,
 	name,
 	onClick,
+	variant = "default",
 	...props
 }: React.ComponentProps<"div"> & {
 	id?: string;
 	name?: string;
+	variant?: "default" | "glass" | "glass-glow";
 }) {
 	const handleClick = useDelegatedComponentEventHandler(onClick, () => ({
 		componentType: "card",
@@ -22,6 +24,12 @@ function Card({
 		},
 	}));
 
+	const variantStyles = {
+		default: "bg-card text-card-foreground border shadow-sm",
+		glass: "glass-premium text-card-foreground",
+		"glass-glow": "glass-premium text-card-foreground neon-glow-hover transition-all duration-300",
+	};
+
 	return (
 		<div
 			data-slot="card"
@@ -29,7 +37,8 @@ function Card({
 			data-name={name}
 			onClick={handleClick}
 			className={cn(
-				"bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+				"flex flex-col gap-6 rounded-xl py-6",
+				variantStyles[variant],
 				className,
 			)}
 			{...props}
