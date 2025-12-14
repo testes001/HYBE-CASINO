@@ -21,6 +21,7 @@ import { useWallet, useWalletBalances, useUserWallets, useDeposit } from '@/hook
 import { usePlaceBet, useGameSessions, useInitializeSeeds, useSessionForVerification } from '@/hooks/useGame';
 import { createConfetti } from '@/lib/confetti';
 import { Dice1, History, Shield, BarChart3, Zap, Cherry, Flame, Circle as CircleIcon, Target } from 'lucide-react';
+import { GradientDivider } from '@/components/GradientDivider';
 
 export const Route = createFileRoute("/")({
 	component: App,
