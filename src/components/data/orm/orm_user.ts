@@ -36,6 +36,7 @@ export interface UserModel {
   kyc_level: number;
   is_banned: boolean;
   last_login_at?: string | null;
+  role?: string | null;
 }
 
 /**
@@ -518,6 +519,7 @@ function UserModelToValues(data: UserModel): Value[] {
     { key: 'kyc_level', type: DataType.number, defaultValue: 0 },
     { key: 'is_banned', type: DataType.boolean, defaultValue: false },
     { key: 'last_login_at', type: DataType.string, defaultValue: null },
+    { key: 'role', type: DataType.string, defaultValue: null },
   ];
 
   return fieldMappings.map(({ key, type, defaultValue }) => {
@@ -562,6 +564,9 @@ function UserModelFromValues(values: Value[]): UserModel {
         break;
       case 'last_login_at':
         data.last_login_at = ParseValue(value, DataType.string) as string | null;
+        break;
+      case 'role':
+        data.role = ParseValue(value, DataType.string) as string | null;
         break;
     }
   }
