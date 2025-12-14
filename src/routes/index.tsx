@@ -242,22 +242,25 @@ function App() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5 }}
 				>
-					<div className="flex items-center gap-3 mb-2">
-						<motion.div
-							animate={{
-								rotate: [0, 360],
-								scale: [1, 1.1, 1],
-							}}
-							transition={{
-								rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
-								scale: { duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: 'reverse' },
-							}}
-						>
-							<Dice1 className="w-8 h-8 text-primary" />
-						</motion.div>
-						<h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-							Provably Fair Casino
-						</h1>
+					<div className="flex items-center justify-between mb-2">
+						<div className="flex items-center gap-3">
+							<motion.div
+								animate={{
+									rotate: [0, 360],
+									scale: [1, 1.1, 1],
+								}}
+								transition={{
+									rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
+									scale: { duration: 2, repeat: Number.POSITIVE_INFINITY, repeatType: 'reverse' },
+								}}
+							>
+								<Dice1 className="w-8 h-8 text-primary" />
+							</motion.div>
+							<h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+								Provably Fair Casino
+							</h1>
+						</div>
+						<ThemeToggle />
 					</div>
 					<p className="text-muted-foreground">
 						Transparent, verifiable, blockchain-powered gaming with multiple games
