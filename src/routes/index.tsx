@@ -282,6 +282,7 @@ function App() {
 						onDisconnect={disconnectWallet}
 					/>
 				</motion.div>
+				<GradientDivider className="mb-8" animated />
 
 				<AnimatePresence mode="wait">
 					{!isConnected ? (
