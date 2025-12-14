@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WalletConnect } from '@/components/WalletConnect';
 import { BalanceDisplay } from '@/components/BalanceDisplay';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { DiceGame } from '@/components/DiceGame';
 import { SlotsGame } from '@/components/SlotsGame';
 import { BalloonGame } from '@/components/BalloonGame';
