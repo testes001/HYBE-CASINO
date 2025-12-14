@@ -234,8 +234,26 @@ function App() {
 	const lastSession = gameSessions[0];
 
 	return (
-		<div className="min-h-screen bg-background">
-			<div className="container mx-auto p-6 max-w-7xl">
+		<div className="min-h-screen bg-background relative">
+			{/* Animated background gradient */}
+			<div className="fixed inset-0 -z-10 overflow-hidden">
+				<motion.div
+					className="absolute inset-0 opacity-30"
+					animate={{
+						background: [
+							'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 112, 219, 0.1))',
+							'linear-gradient(135deg, rgba(147, 112, 219, 0.1), rgba(59, 130, 246, 0.1))',
+							'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 112, 219, 0.1))',
+						],
+					}}
+					transition={{
+						duration: 10,
+						repeat: Number.POSITIVE_INFINITY,
+						repeatType: 'reverse',
+					}}
+				/>
+			</div>
+			<div className="container mx-auto p-6 max-w-7xl relative z-10">
 				{/* Header */}
 				<motion.div
 					className="mb-8"
