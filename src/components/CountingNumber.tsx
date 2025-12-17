@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 
 interface CountingNumberProps {
@@ -10,42 +10,45 @@ interface CountingNumberProps {
   suffix?: string;
 }
 
-export function CountingNumber({
-  value,
-  decimals = 8,
-  duration = 0.8,
-  className = '',
-  prefix = '',
-  suffix = '',
-}: CountingNumberProps) {
-  const spring = useSpring(0, {
-    mass: 0.8,
-    stiffness: 75,
-    damping: 15,
-    duration: duration * 1000,
-  });
+// Performance: Wrapped with React.memo to prevent re-renders unless props change.
+export const CountingNumber = memo(
+  ({
+    value,
+    decimals = 8,
+    duration = 0.8,
+    className = '',
+    prefix = '',
+    suffix = '',
+  }: CountingNumberProps) => {
+    const spring = useSpring(0, {
+      mass: 0.8,
+      stiffness: 75,
+      damping: 15,
+      duration: duration * 1000,
+    });
 
-  const display = useTransform(spring, (current) =>
-    current.toFixed(decimals)
-  );
+    const display = useTransform(spring, (current) =>
+      current.toFixed(decimals)
+    );
 
-  const previousValue = useRef(0);
+    const previousValue = useRef(0);
 
-  useEffect(() => {
-    if (previousValue.current !== value) {
-      spring.set(value);
-      previousValue.current = value;
-    }
-  }, [value, spring]);
+    useEffect(() => {
+      if (previousValue.current !== value) {
+        spring.set(value);
+        previousValue.current = value;
+      }
+    }, [value, spring]);
 
-  return (
-    <motion.span className={className}>
-      {prefix}
-      <motion.span>{display}</motion.span>
-      {suffix}
-    </motion.span>
-  );
-}
+    return (
+      <motion.span className={className}>
+        {prefix}
+        <motion.span>{display}</motion.span>
+        {suffix}
+      </motion.span>
+    );
+  }
+);
 
 interface PulseNumberProps {
   value: number;
