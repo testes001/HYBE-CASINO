@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,17 +58,21 @@ export function GameHistory({ sessions, onVerify }: GameHistoryProps) {
     URL.revokeObjectURL(url);
   };
 
-  // Filter sessions
-  const filteredSessions = sessions.filter(session => {
-    const isWin = session.status === GameSessionStatus.WON;
-    const matchesFilter = filter === 'all' || (filter === 'wins' ? isWin : !isWin);
-    const matchesSearch = searchTerm === '' ||
-      session.outcome?.toString().includes(searchTerm) ||
-      session.bet_amount.includes(searchTerm) ||
-      session.nonce.toString().includes(searchTerm);
+  // ⚡ Bolt: Memoize the filtered sessions to prevent re-calculation on every render.
+  // This is a significant optimization when the user is typing in the search box or switching filters,
+  // as it avoids re-filtering the entire list of sessions on every key press.
+  const filteredSessions = useMemo(() => {
+    return sessions.filter(session => {
+      const isWin = session.status === GameSessionStatus.WON;
+      const matchesFilter = filter === 'all' || (filter === 'wins' ? isWin : !isWin);
+      const matchesSearch = searchTerm === '' ||
+        session.outcome?.toString().includes(searchTerm) ||
+        session.bet_amount.includes(searchTerm) ||
+        session.nonce.toString().includes(searchTerm);
 
-    return matchesFilter && matchesSearch;
-  });
+      return matchesFilter && matchesSearch;
+    });
+  }, [sessions, filter, searchTerm]);
 
   return (
     <Card className="relative p-6 overflow-hidden backdrop-blur-sm bg-card/95 border-2">
