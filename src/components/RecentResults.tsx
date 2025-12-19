@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -16,9 +17,16 @@ interface RecentResultsProps {
 
 export function RecentResults({ results, maxDisplay = 10 }: RecentResultsProps) {
   const displayResults = results.slice(0, maxDisplay);
-  const wins = results.filter(r => r.won).length;
-  const losses = results.length - wins;
-  const winRate = results.length > 0 ? (wins / results.length) * 100 : 0;
+
+  // ⚡ Bolt: Memoize stats calculation to prevent re-computation on every render.
+  // This is a valuable optimization when the `results` array is large or
+  // the component re-renders for other reasons.
+  const { wins, losses, winRate } = useMemo(() => {
+    const wins = results.filter(r => r.won).length;
+    const losses = results.length - wins;
+    const winRate = results.length > 0 ? (wins / results.length) * 100 : 0;
+    return { wins, losses, winRate };
+  }, [results]);
 
   return (
     <Card className="p-4 space-y-3">
