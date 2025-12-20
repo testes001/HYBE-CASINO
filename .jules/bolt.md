@@ -1,0 +1,3 @@
+## 2024-07-16 - Memoizing Derived State
+**Learning:** A recurring performance pattern in this codebase is components re-calculating derived state from props on every render. Using `useMemo` to memoize these expensive calculations (e.g., filtering lists, calculating stats) is a valuable optimization strategy, as seen in `GameHistory.tsx`.
+**Action:** When inspecting components, look for derived state that is re-calculated on every render. If the calculation is non-trivial, wrap it in `useMemo` with a correct dependency array.
