@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 
 interface CountingNumberProps {
@@ -25,9 +25,14 @@ export function CountingNumber({
     duration: duration * 1000,
   });
 
-  const display = useTransform(spring, (current) =>
-    current.toFixed(decimals)
+  // Memoize the transform function to prevent re-creation on every render.
+  // This is a micro-optimization, but beneficial given the component's
+  // widespread use in games and the main balance display.
+  const transformFn = useCallback(
+    (current: number) => current.toFixed(decimals),
+    [decimals]
   );
+  const display = useTransform(spring, transformFn);
 
   const previousValue = useRef(0);
 
