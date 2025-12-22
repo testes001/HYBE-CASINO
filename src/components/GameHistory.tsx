@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,8 +58,9 @@ export function GameHistory({ sessions, onVerify }: GameHistoryProps) {
     URL.revokeObjectURL(url);
   };
 
-  // Filter sessions
-  const filteredSessions = sessions.filter(session => {
+  // Memoize filtered sessions to prevent expensive re-calculations on every render.
+  // This is especially important when the list of sessions is large.
+  const filteredSessions = useMemo(() => sessions.filter(session => {
     const isWin = session.status === GameSessionStatus.WON;
     const matchesFilter = filter === 'all' || (filter === 'wins' ? isWin : !isWin);
     const matchesSearch = searchTerm === '' ||
@@ -68,7 +69,7 @@ export function GameHistory({ sessions, onVerify }: GameHistoryProps) {
       session.nonce.toString().includes(searchTerm);
 
     return matchesFilter && matchesSearch;
-  });
+  }), [sessions, filter, searchTerm]);
 
   return (
     <Card className="relative p-6 overflow-hidden backdrop-blur-sm bg-card/95 border-2">
